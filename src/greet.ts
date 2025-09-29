@@ -3,7 +3,7 @@
 //     return "Hello, " + name + "!";
 // }
 
-function greet(name: string): string {
+export function greet(name: string): string {
     return `Hello, ${name}!`;
 }
 
@@ -12,7 +12,7 @@ function greet(name: string): string {
 //     return name + " is " + age + " years old.";
 // }
 
-function introduce(name: string, age: number = 18): string {
+export function introduce(name: string, age: number = 18): string {
     return `${name} is ${age} years old.`;
 }
 
@@ -21,7 +21,7 @@ function introduce(name: string, age: number = 18): string {
 // - 引数は number の配列
 // - 戻り値は number
 // 完成形をTypeScriptで書いてください。
-const sumArray = (nums: number[]): number =>
+export const sumArray = (nums: number[]): number =>
     // 0 は初期値
     nums.reduce((prev: number, current: number) => prev + current, 0);
 
@@ -30,7 +30,7 @@ const sumArray = (nums: number[]): number =>
 // - 引数は `{ name: string; age: number }` 型のオブジェクト
 // - 戻り値は `"Name: {name}, Age: {age}"` という文字列
 type User = { name: string; age: number };
-const formatUser = (user: User): string =>
+export const formatUser = (user: User): string =>
     `Name: ${user.name}, Age: ${user.age}`;
 
 // `value` が文字列か数値かを受け取り、それぞれで処理を変える関数 `processValue` を作ってください。
@@ -39,7 +39,7 @@ const formatUser = (user: User): string =>
 // - 戻り値は `string`
 //   - `string` の場合 → `"文字列: {value}"`
 //   - `number` の場合 → `"数値: {value}"`
-const processValue = (value: string | number): string => {
+export const processValue = (value: string | number): string => {
     const type = typeof value === "string" ? "文字列" : "数値";
     return `${type}: ${value}`;
 };
@@ -48,7 +48,7 @@ const processValue = (value: string | number): string => {
 // - 関数型式で宣言
 // - 配列の要素はジェネリクス `T[]`
 // - 戻り値は `T | undefined`（配列が空の場合を考慮）
-const firstElement = <T>(array: T[]): T | undefined => {
+export const firstElement = <T>(array: T[]): T | undefined => {
     if (array.length === 0) return;
     return array[0];
 };
@@ -57,7 +57,7 @@ const firstElement = <T>(array: T[]): T | undefined => {
 // - 関数型式で宣言
 // - `enum Weekday { Sunday, Monday, … }` のように定義
 // - 戻り値は `string`
-enum Weekday {
+export enum Weekday {
     Sunday,
     Monday,
     Tuesday,
@@ -66,7 +66,8 @@ enum Weekday {
     Friday,
     Saturday,
 }
-const getDayMessage = (weekday: Weekday): string => `今日は${Weekday[weekday]}`;
+export const getDayMessage = (weekday: Weekday): string =>
+    `今日は${Weekday[weekday]}`;
 
 // 次のような「座標」を表すオブジェクトの配列から、x の平均値を返す関数を作ってください。
 // - 型エイリアス Point を使う
@@ -74,7 +75,7 @@ const getDayMessage = (weekday: Weekday): string => `今日は${Weekday[weekday]
 // - 配列が空の場合は 0 を返す
 // ```type Point = { x: number; y: number };```
 type Point = { x: number; y: number };
-const averageX = (points: Point[]): number => {
+export const averageX = (points: Point[]): number => {
     if (points.length === 0) return 0;
     return points.reduce((sum, p) => sum + p.x, 0) / points.length;
 };
@@ -83,7 +84,7 @@ const averageX = (points: Point[]): number => {
 // - 引数は読み取り専用の数値配列 Readonly<number[]>
 // - 配列の各要素を2倍して新しい配列を返す
 // - 関数型式で宣言
-const doubleNumbers = (nums: readonly number[]): number[] =>
+export const doubleNumbers = (nums: readonly number[]): number[] =>
     nums.map((num) => num * 2);
 
 // 次の「本」の情報を扱う関数を作ってください。
@@ -99,20 +100,17 @@ type Book = {
     title: string;
     author?: string;
 };
-const formatBook = (book: Book): string => {
-    if (!book.author) return "Unknown";
+export const formatBook = (book: Book): string => {
     return `Title: ${book.title}, Author: ${book.author ?? "Unknown"}`;
 };
 
-export = {
-    greet,
-    introduce,
-    sumArray,
-    formatUser,
-    processValue,
-    firstElement,
-    getDayMessage,
-    averageX,
-    doubleNumbers,
-    formatBook,
+// オブジェクトの配列から、指定したキーの値を配列として抜き出す関数 pluck を作ってください。
+// - 関数型式で宣言
+// - ジェネリクスを使い、T はオブジェクト型で、キーは keyof T 型を使うこと
+// - 引数:
+//     - items: T[]
+//     - key: keyof T
+// - 戻り値: T[K][]
+export const pluck = <T, K extends keyof T>(items: T[], key: K): T[K][] => {
+    return items.map((item: T) => item[key]);
 };
