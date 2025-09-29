@@ -112,5 +112,68 @@ export const formatBook = (book: Book): string => {
 //     - key: keyof T
 // - 戻り値: T[K][]
 export const pluck = <T, K extends keyof T>(items: T[], key: K): T[K][] => {
-    return items.map((item: T) => item[key]);
+    return items.map((item) => item[key]);
+};
+
+// 次の仕様で isString 関数を作ってください：
+// - 関数型式で宣言
+// - 引数は unknown 型
+// - 戻り値は 型述語 (arg is string) を使って、引数が文字列かどうかを判定
+// - 返す値は boolean
+export const isString = (arg: unknown): arg is string => {
+    return typeof arg === "string";
+};
+
+// ユニオン型 string | number の配列から 文字列だけを抽出する関数 filterStrings を作ってください。
+// - 関数型式で宣言
+// - 型述語を使って、返り値の型が正しく string[] になるようにしてください。
+export const filterStrings = (args: (string | number)[]): string[] => {
+    return args.filter((arg): arg is string => isString(arg));
+};
+
+// ユニオン型 Dog | Cat の配列があります。
+// 型定義：
+// ```typscript
+// type Dog = { kind: "dog"; name: string; bark: () => void };
+// type Cat = { kind: "cat"; name: string; meow: () => void };
+// ```
+//
+// 関数 filterDogs を作ってください。
+// - 引数: (Dog | Cat)[]
+// - 戻り値: Dog[]
+// - 関数型式で宣言
+// - 型述語を使って、kind: "dog" の要素だけをフィルタしてください。
+export type Dog = { kind: "dog"; name: string; bark: () => void };
+export type Cat = { kind: "cat"; name: string; meow: () => void };
+export const filterDogs = (pets: (Dog | Cat)[]): Dog[] => {
+    return pets.filter((pet): pet is Dog => pet.kind === "dog");
+};
+
+// ジェネリクスを使い、オブジェクト配列から指定したキーの値だけを返す関数 pluckValues を作ってください。
+// - 関数型式で宣言
+// - 引数:
+//    - items: T[] （オブジェクトの配列）
+//    - key: K （T のプロパティキー）
+// - 戻り値: T[K][]
+// - 型安全に、key が T のプロパティ以外を受け取らないようにしてください
+export const pluckValues = <T, K extends keyof T>(
+    items: T[],
+    key: K,
+): T[K][] => {
+    return items.map((item) => item[key]);
+};
+
+// ユーザーオブジェクトの配列があります：
+// ```typescript
+// type User = { id: number; name?: string };
+// ```
+//
+// 関数 getUserNames を作ってください
+// - 引数: users: User[]
+// - 戻り値: string[]
+// - name が存在しない場合は "Unknown" に置き換える
+// - Optional チェーン (?.) と Nullish coalescing (??) を使う
+type User2 = { id: number; name?: string };
+export const getUserNames = (users: User2[]): string[] => {
+    return users.map((user) => user?.name ?? "Unknown");
 };

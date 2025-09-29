@@ -1,13 +1,20 @@
 import {
     averageX,
+    type Cat,
+    type Dog,
     doubleNumbers,
+    filterDogs,
+    filterStrings,
     firstElement,
     formatBook,
     formatUser,
     getDayMessage,
+    getUserNames,
     greet,
     introduce,
+    isString,
     pluck,
+    pluckValues,
     processValue,
     sumArray,
     Weekday,
@@ -120,5 +127,62 @@ describe("pluck", () => {
                 "a",
             ),
         ).toStrictEqual([1, 3]);
+    });
+});
+
+describe("isString", () => {
+    test("stringのときtrueを返す", () => {
+        expect(isString("a")).toBeTruthy();
+    });
+
+    test("numberのときfalseを返す", () => {
+        expect(isString(1)).toBeFalsy();
+    });
+
+    test("objectのときfalseを返す", () => {
+        expect(isString({})).toBeFalsy();
+    });
+});
+
+describe("filterStrings", () => {
+    test("stringの値だけ抽出して返す", () => {
+        expect(filterStrings(["a", 1, 2, "b"])).toStrictEqual(["a", "b"]);
+    });
+});
+
+describe("filterDogs", () => {
+    test("Dogだけ抽出して返す", () => {
+        const pets = [
+            { kind: "dog", name: "foo", bark: () => {} } as Dog,
+            { kind: "cat", name: "bar", meow: () => {} } as Cat,
+            { kind: "dog", name: "baz", bark: () => {} } as Dog,
+        ];
+        expect(filterDogs(pets)).toEqual([pets[0], pets[2]]);
+    });
+});
+
+describe("pluckValues", () => {
+    test("オブジェクトの配列から、指定したキーの値を配列として抜き出す", () => {
+        expect(
+            pluckValues(
+                [
+                    { a: 1, b: 2 },
+                    { a: 3, b: 4 },
+                ],
+                "a",
+            ),
+        ).toStrictEqual([1, 3]);
+    });
+});
+
+describe("getUserNames", () => {
+    test("ユーザー名を抽出する", () => {
+        expect(
+            getUserNames([
+                { id: 1, name: "foo" },
+                { id: 2 },
+                { id: 3, name: "bar" },
+            ]),
+        ).toEqual(["foo", "Unknown", "bar"]);
     });
 });
