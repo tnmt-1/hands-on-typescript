@@ -9,6 +9,7 @@ import {
     formatBook,
     formatUser,
     getDayMessage,
+    getPublicProfile,
     getUserNames,
     greet,
     introduce,
@@ -16,7 +17,9 @@ import {
     pluck,
     pluckValues,
     processValue,
+    removeSensitiveInfo,
     sumArray,
+    updateProduct,
     Weekday,
 } from "./greet";
 
@@ -184,5 +187,54 @@ describe("getUserNames", () => {
                 { id: 3, name: "bar" },
             ]),
         ).toEqual(["foo", "Unknown", "bar"]);
+    });
+});
+
+describe("updateProduct", () => {
+    test("Productを部分更新する", () => {
+        expect(
+            updateProduct({ id: 1, name: "foo", price: 100 }, { name: "bar" }),
+        ).toEqual({ id: 1, name: "bar", price: 100 });
+    });
+});
+
+describe("getPublicProfile", () => {
+    test("公開プロフィールだけを抽出する", () => {
+        expect(
+            getPublicProfile({
+                id: 1,
+                name: "foo",
+                department: "人事部",
+                salary: 1000000,
+            }),
+        ).toEqual({ id: 1, name: "foo", department: "人事部" });
+    });
+});
+
+describe("removeSensitiveInfo", () => {
+    test("給与情報だけを除去する", () => {
+        expect(
+            removeSensitiveInfo([
+                {
+                    id: 1,
+                    name: "foo",
+                    department: "人事部",
+                    salary: 1000000,
+                },
+                {
+                    id: 2,
+                    name: "bar",
+                    department: "労務部",
+                    salary: 2000000,
+                },
+            ]),
+        ).toEqual([
+            { id: 1, name: "foo", department: "人事部" },
+            {
+                id: 2,
+                name: "bar",
+                department: "労務部",
+            },
+        ]);
     });
 });

@@ -177,3 +177,69 @@ type User2 = { id: number; name?: string };
 export const getUserNames = (users: User2[]): string[] => {
     return users.map((user) => user?.name ?? "Unknown");
 };
+
+// 型 Product を定義します：
+// ```typescript
+// type Product = {
+//     id: number;
+//     name: string;
+//     price: number;
+// };
+// ```
+//
+// 関数 updateProduct を作ってください
+// - 引数:
+//     - product: Product
+//     - updates: Partial<Product>（一部だけ更新可能）
+// - 戻り値: Product（更新後の完全なオブジェクト）
+// - 関数型式で宣言してください
+type Product = {
+    id: number;
+    name: string;
+    price: number;
+};
+export const updateProduct = (
+    product: Product,
+    updates: Partial<Product>,
+): Product => {
+    return { ...product, ...updates };
+};
+
+// 次の型 Employee があります：
+// ```typescript
+// type Employee = {
+//     id: number;
+//     name: string;
+//     department: string;
+//     salary: number;
+// };
+// ```
+//
+// 以下を満たす関数を作ってください：
+// 1. getPublicProfile
+//     - 引数: Employee
+//     - 戻り値: Pick<Employee, "id" | "name" | "department">
+//     - 給与情報を除いた公開プロフィールを返す
+// 2. removeSensitiveInfo
+//     - 引数: Employee[]
+//     - 戻り値: Omit<Employee, "salary">[]
+//     - 複数の従業員データから給与情報を取り除く
+type Employee = {
+    id: number;
+    name: string;
+    department: string;
+    salary: number;
+};
+export const getPublicProfile = (
+    employee: Employee,
+): Pick<Employee, "id" | "name" | "department"> => {
+    // biome-ignore lint/correctness/noUnusedVariables: salaryは使用しない
+    const { salary, ...publicInfo } = employee;
+    return publicInfo;
+};
+
+export const removeSensitiveInfo = (
+    employees: Employee[],
+): Omit<Employee, "salary">[] => {
+    return employees.map(({ salary, ...publicInfo }) => publicInfo);
+};
